@@ -1,0 +1,31 @@
+.
+├── cmd
+│   └── crudapp
+│       └── main.go
+├── file_tree.txt
+├── go.mod
+├── go.sum
+├── pkg
+│   ├── handlers
+│   │   ├── items.go
+│   │   └── user.go
+│   ├── items
+│   │   ├── item.go
+│   │   └── repo.go
+│   ├── middleware
+│   │   ├── accesslog.go
+│   │   ├── auth.go
+│   │   └── panic.go
+│   ├── session
+│   │   ├── manager.go
+│   │   └── session.go
+│   └── user
+│       └── user.go
+├── readme.md
+└── templates
+    ├── create.html
+    ├── edit.html
+    ├── index.html
+    └── login.html
+
+9 directories, 19 files

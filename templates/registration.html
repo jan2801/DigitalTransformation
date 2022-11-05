@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="/static/base/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__login">
+            <a href="/registration">Регистрация</a>
+            <a href="/login">Войти</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main__cover"></div>
+
+        <div class="main__content">
+            <form id="signup-form" class="form" method="POST" action="/registration">
+                <input type="text" class="form__input" name="login" id="login" value="" placeholder="Имя пользователя" required>
+                <input type="password" class="form__input" name="password" id="password" value="" placeholder="Пароль" required>
+                <input class="form__input" type="password" name="password-confirm" value="" placeholder="Повторите пароль" required>
+                
+                {{if ne (len .) 0}}
+                    <div class="form__warning">Пользователь с таким именем уже существует!</div>
+                {{end}}
+
+                <button type="submit" class="form__button">Регистрация</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/static/base/js/sign-up.js"></script>
+</body>
+</html>

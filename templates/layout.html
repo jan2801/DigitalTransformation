@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ template "title" . }}</title>
+    <link rel="stylesheet" href="static/base/css/style.css">
+
+    {{ template "styles" . }}
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__login">
+            <a href="/registration">Регистрация</a>
+            <a href="/login">Войти</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main__cover"></div>
+
+        <div class="main__content">
+            {{ template "main" . }}
+        </div>
+    </main>
+
+    {{ template "scripts" . }}
+</body>
+
+</html>

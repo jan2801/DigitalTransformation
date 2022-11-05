@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="/static/base/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__login">
+            <a href="/registration">Регистрация</a>
+            <a href="/login">Войти</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main__cover"></div>
+
+        <div class="main__content">
+            <form class="form" method="POST" action="/login">
+                <input type="text" class="form__input" name="login" id="login" value="admin" placeholder="Имя пользователя" required>
+                <input type="password" class="form__input" name="password" id="password" value="1234" placeholder="Пароль" required>
+
+                {{if ne (len .) 0}}
+                    <div class="form__warning">Неверные имя пользователя или пароль!</div>
+                {{end}}
+                
+                <button type="submit" class="form__button">Войти</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
