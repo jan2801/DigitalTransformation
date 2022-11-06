@@ -29,7 +29,7 @@ func main() {
 	//templates := template.Must(template.ParseGlob("../../templates/*.html")) // for testing
 
 	// TODO - нормальная конфигурация
-	dsn := "host=localhost user=postgres password=3546"
+	dsn := "host=localhost user=postgres password=postgres"
 	dsn += " dbname=moshack port=5432 sslmode=disable"
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -116,7 +116,7 @@ func main() {
 	r.HandleFunc("/finalestimation", apartmentHandler.EstimateAll).Methods("POST")
 
 	r.HandleFunc("/downloadxls", apartmentHandler.Download).Methods("GET")
-	r.HandleFunc("/load", apartmentHandler.Load2).Methods("GET")
+	r.HandleFunc("/load", apartmentHandler.Load2).Methods("POST")
 	r.HandleFunc("/createUser", userHandler.CreateUser).Methods("POST")
 
 	mux := middleware.Auth(sm, r)
