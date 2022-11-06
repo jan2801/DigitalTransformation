@@ -5,7 +5,7 @@
 ### Python
 
 ```
-  pip install libraries_for_ds.py
+  pip install libraries_for_ds.txt
 ```
 
 ### JS
