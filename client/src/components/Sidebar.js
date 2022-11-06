@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import SelectBox from './SelectBox';
 import { Button } from '@consta/uikit/Button';
 
 
 const months = [
-	
+	{id: '-1', label:'Все время'}
 ];
 const num_to_month = {
 	0: 'январь',
@@ -41,46 +41,39 @@ const styles = {
 }
 
 function Sidebar(props) {
-
 	const [filters, setFilters] = useState(props.filters);
-
 	const sendFilters = props.setFilters;
 
-	const clearFilters = ()=>{
-		setFilters({
-			start: {label: 'Все время', id: '1'},
-			end: {label: 'Все время', id: '1'},
-			country: {label:"Все страны",code:"ALL"},
-			subject: {code: '00000', label: 'Все субъекты'},
-			level: {label: '1', id: '1'},
-			cat: null,
-		});
+	const setFilter = (value, filter)=>{
+		const newFilters = {...filters};
+		newFilters[filter] = value;
+		setFilters(newFilters);
 	}
 
-	const setFilter = (value, filter)=>{
-		filters[filter] = value;
-	}
+	useEffect(()=>{
+
+	});
 
 	return (<div style={styles.sidebar}>
 		<Row>
 			<Col>
-				<SelectBox label='Период' items={months} onChange={(value)=>{setFilter(value, 'start')}} />
+				<SelectBox label='Период' value={props.filters.start} items={months} onChange={(value)=>{setFilter(value, 'start')}} />
 			</Col>
 			<Col>
-				<SelectBox label='&nbsp;' value={months[months.length-1]} items={months} onChange={(value)=>{setFilter(value, 'end')}} />
+				<SelectBox label='&nbsp;' value={props.filters.end} items={months} onChange={(value)=>{setFilter(value, 'end')}} />
 			</Col>
 		</Row>
 		<Row>
-			<SelectBox label='Страна' items={props.countries.map((item)=>{return {label:item.name, code: item.code}})}  onChange={(value)=>{setFilter(value, 'country')}} />
+			<SelectBox label='Страна' value={props.filters.country} items={props.countries.map((item)=>{return {label:item.name, code: item.code}})}  onChange={(value)=>{setFilter(value, 'country')}} />
 		</Row>
 		<Row>
-			<SelectBox label='Субъект РФ' items={props.subjects.map((item)=>{return {label:item.name, code: ''+item.code}})} onChange={(value)=>{setFilter(value, 'subject')}} />
+			<SelectBox label='Субъект РФ' value={props.filters.subject} items={props.subjects.map((item)=>{return {label:item.name, code: ''+item.code}})} onChange={(value)=>{setFilter(value, 'subject')}} />
 		</Row>
 		<Row>
-			<SelectBox label='Уровень ТН ВЭД' items={[{label: '1', id: '1'}, {label: '2', id: '2'}, {label: '3', id: '3'}, {label: '4', id: '4'}, {label: '5', id: '5'}]} onChange={(value)=>{setFilter(value, 'level')}} />
+			<SelectBox label='Уровень ТН ВЭД' value={props.filters.level} items={[{label: '1', id: '1'}, {label: '2', id: '2'}, {label: '3', id: '3'}, {label: '4', id: '4'}, {label: '5', id: '5'}]} onChange={(value)=>{setFilter(value, 'level')}} />
 		</Row>
 		<Row>
-			<SelectBox label='ТНВЭД' multiple items={[{label: '1', id: '1', code: '1'}, {label: '2', id: '2', code: '2'}, {label: '3', id: '3', code: '3'}]} onChange={(value)=>{setFilter(value, 'cat')}} />
+			<SelectBox label='ТНВЭД' value={props.filters.cat} multiple items={[{label: '1', id: '1', code: '1'}, {label: '2', id: '2', code: '2'}, {label: '3', id: '3', code: '3'}]} onChange={(value)=>{setFilter(value, 'cat')}} />
 		</Row>
 		<Row style={{position: 'absolute', bottom: '32px', width: '100%'}}>
 			<Row>
@@ -91,7 +84,7 @@ function Sidebar(props) {
 						size='m' 
 						width='full' 
 						style={styles.button}
-						onClick={clearFilters}
+						onClick={props.clearFilters}
 					/>
 				</Col>
 			</Row>
