@@ -82,7 +82,7 @@ with open('params.txt', encoding='utf-8') as f:
     df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, country = country, per_start=per_start, per_end=per_end)
     
     for key in (df_top_n):     
-        df_top_n[key].to_csv(folder_name+'/'+key)
+        df_top_n[key].to_csv(folder_name+'/'+key+'.csv')
         
                     
 
