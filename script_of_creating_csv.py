@@ -28,8 +28,8 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
             
             if region == 'all' and country == 'all':
 
-                list_of_napr[napr+'all_all_all_topcontryes'] = (data_new[(data_new['period'] > per_start) & (data_new['period'] < per_end)].groupby(["nastranapr"]).Stoim.sum().reset_index().sort_values('Stoim',ascending=False).set_index("nastranapr"))
-
+                list_of_napr[napr+'_all_all_all_topcontryes'] = (data_new[(data_new['period'] > per_start) & (data_new['period'] < per_end)].groupby(["nastranapr"]).Stoim.sum().reset_index().sort_values('Stoim',ascending=False).set_index("nastranapr"))
+                list_of_napr[napr+'_all_all_all_topregions'] = (data_new[ (data_new['period'] > per_start) & (data_new['period'] < per_end)].groupby(["Region"]).Stoim.sum().reset_index().sort_values('Stoim',ascending=False).set_index("Region"))
                 
             if country != 'all' and region == 'all':
 
@@ -63,6 +63,8 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
     return  list_of_napr
 
 
+
+
  
     
 
@@ -82,7 +84,7 @@ with open('params.txt', encoding='utf-8') as f:
     df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, country = country, per_start=per_start, per_end=per_end)
     
     for key in (df_top_n):     
-        df_top_n[key].to_csv(folder_name+'/'+key)
+        df_top_n[key].to_csv(folder_name+'/'+key+'.csv')
         
                     
 
