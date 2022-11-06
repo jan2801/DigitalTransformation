@@ -1,0 +1,10 @@
+pip install datetime
+pip install pandas
+pip install os
+pip install pickle
+pip install dateutil.relativedelta
+pip install sys
+pip install numpy
+pip install matplotlib.pyplot
+pip install missingno
+pip install tqdm
