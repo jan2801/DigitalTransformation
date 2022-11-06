@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 
 	"moshack_2022/pkg/session"
@@ -15,6 +18,11 @@ const (
 	errorBadPass       = "badpass"
 	errorRepeatedLogin = "repeatedlogin"
 )
+
+type UserRegistration struct {
+	Username string `json:"login"`
+	Password string `json:"password"`
+}
 
 type UserHandler struct {
 	Tmpl     *template.Template
@@ -60,7 +68,20 @@ func (h *UserHandler) LoginGET(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) LoginPOST(w http.ResponseWriter, r *http.Request) {
-	u, err := h.UserRepo.Authorize(r.FormValue("login"), r.FormValue("password"))
+	jsonStr, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("err 1")
+		http.Error(w, "bad request", http.StatusInternalServerError)
+		return
+	}
+	var ur UserRegistration
+	err = json.Unmarshal([]byte(jsonStr), &ur)
+	if err != nil {
+		fmt.Println("err 2")
+		http.Error(w, "json err", http.StatusInternalServerError)
+		return
+	}
+	u, err := h.UserRepo.Authorize(ur.Username, ur.Password)
 	if err == user.ErrNoUser {
 		http.Redirect(w, r, "/login?error="+errorNoUser, http.StatusFound)
 		return
