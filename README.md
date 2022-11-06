@@ -36,7 +36,12 @@ npm run build
     
 4.	Download packages you need
 5.	Open Terminal 
-6.	Print cd <полный путь названия вашего пространства>
-7.	Print sudo apt install postgres
-8.	print go main.go 
-
+```
+7.	 cd <полный путь названия вашего пространства>
+```
+```
+10.	sudo apt install postgres
+```
+```
+13.	go main.go 
+```
