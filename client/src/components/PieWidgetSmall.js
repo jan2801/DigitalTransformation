@@ -123,8 +123,8 @@ function PieWidget(props) {
 					{
 						Object.keys(props.data).map(function(key, index) {
 							return <div style={styles.legendItem}><div style={{
-								width: '10px',
-								height: '10px',
+								width: '9px',
+								height: '9px',
 								background: color(index),
 							}}></div><div style={styles.label}>{key}</div></div>
 						})

@@ -38,6 +38,9 @@ const styles = {
 		fontSize: "16px",
 		lineHeight: "19px",
 		color: "#000000",
+		overflow: "hidden",
+		textOverflow: "ellipsis",
+		whiteSpace: 'nowrap',
 	},
 }
 
@@ -64,10 +67,10 @@ function CountryRating(props) {
 						<Col lg='1'>
 							<img src={`flags/${item['Флаг']}.png`} width='26px' height='16px'></img>
 						</Col>
-						<Col lg='5' style={styles.text}>
+						<Col lg='7' style={styles.text}>
 							{item['Страна']}
 						</Col>
-						<Col lg='6' style={{...styles.text, ...{textAlign: 'right'}}}>
+						<Col lg='4' style={{...styles.text, ...{textAlign: 'right'}}}>
 							{numberWithSpaces(item[value])}
 						</Col>
 					</Row>

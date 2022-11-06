@@ -574,9 +574,7 @@ function sendRequest(url, data, callback) {
 	xhr.send();
 	xhr.onload = function() {
 		if (xhr.status !== 200) {
-			alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
-	  	} else { 
-			alert(`Готово, получили ${xhr.response.length} байт`);
+	  	} else {
 			callback(xhr.status, xhr.response);
 	  	}
 	};
@@ -589,6 +587,11 @@ function App() {
 	const [activeTab, setActiveTab] = useState('Логин');
 	const [activeCat, setActiveCat] = useState('01-ШТ-ЖИВЫЕ ЖИВОТНЫЕ');
 	const [sideBarOpen, setSideBarOpen] = useState(false);
+	const [user, setUser] = useState(mockData.user);
+	const [shortStats, setShortStats] = useState(mockData.shortStats);
+	const [exportRating, setExportRating] = useState(mockData.countryRating);
+	const [importRating, setImportRating] = useState(mockData.countryRating);
+
 	const [filters, setFilters] = useState({
 		start: {label: 'Все время', id: '1'},
 		end: {label: 'Все время', id: '1'},
@@ -613,7 +616,52 @@ function App() {
 
 	const setFilters2 = (filters)=>{
 		console.log(JSON.stringify(filters));
-		// get request and update data
+		let files = [
+			'ex_35_all_DE_topregions.csv',
+			'im_35_all_DE_topregions.csv',
+			'im_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
+			'ex_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
+		];
+
+		for (const file of files) {
+			let filename = file.split('_');
+			
+			sendRequest(file, {}, (status, res)=>{
+				let rows = res.split('\r\n');
+				if (filename[0]==='ex' && filename[2]==='all' && filename[3]!=='all') {
+					let data = [];
+					for (let i=1; i<6; i++) {
+						try {
+							data.push({
+								'Страна': rows[i].split(',')[0].split(' - ')[1],
+								'Флаг': 'RU',
+								'тыс. долл.': parseInt(rows[i].split(',')[1]),
+								'кг.': 0,
+								'тыс. долл./кг.': 0,
+							});
+						} catch {}
+					}
+					console.log(data);
+					setExportRating(data);
+				}
+				if (filename[filename.length-1]=='topregions' && filename[0]=='im') {
+					let data = [];
+					for (let i=1; i<6; i++) {
+						try {
+							data.push({
+								'Страна': rows[i].split(',')[0].split(' - ')[1],
+								'Флаг': 'RU',
+								'тыс. долл.': parseInt(rows[i].split(',')[1]),
+								'кг.': 0,
+								'тыс. долл./кг.': 0,
+							});
+						} catch {}
+					}
+					console.log(data);
+					setExportRating(data);
+				}
+			})
+		}
 	}
 
 	const setRequest = (filters)=>{
@@ -636,7 +684,7 @@ function App() {
 			<Container fluid style={styles.container}>
 				{activeTab==='Дашборд'||activeTab==='Профиль' ?
 				<Row style={{width: '100%', margin: '0px'}}>
-					<Header openProfile={()=>{setSideBarOpen(!sideBarOpen)}} setActiveTab={setActiveTab} activeTab={activeTab} logout={logout} user={mockData.user} />
+					<Header openProfile={()=>{setSideBarOpen(!sideBarOpen)}} setActiveTab={setActiveTab} activeTab={activeTab} logout={logout} user={user} />
 				</Row> : <div></div>
 				}		
 				{activeTab==='Дашборд' ?
@@ -658,7 +706,7 @@ function App() {
 								<Col lg='8'>
 									<Row>
 										<Col>
-											<ShortStats data={mockData.shortStats}/>
+											<ShortStats data={shortStats}/>
 										</Col>
 									</Row>
 									<Row>
@@ -690,10 +738,10 @@ function App() {
 							</Row>
 							<Row>
 								<Col lg='4'>
-									<CountryRating data={mockData.countryRating} label='Рейтинг экспортеров товара' />
+									<CountryRating data={importRating} label='Рейтинг экспортеров товара' />
 								</Col>
 								<Col lg='4'>
-									<CountryRating data={mockData.countryRating} label='Рейтинг импортеров товара' />
+									<CountryRating data={exportRating} label='Рейтинг импортеров товара' />
 								</Col>
 								<Col lg='4'>
 									<PieWidgetSmall pieSize={200} data={mockData.pieData} divId='importerparts' />

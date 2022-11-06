@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/static/css/main.520e11e8.css",
+    "main.js": "/static/js/main.7f37bf26.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Inter-Bold.woff": "/static/media/Inter-Bold.8f8c5ea1d3a580b04e28.woff",
+    "static/media/Inter-SemiBold.woff": "/static/media/Inter-SemiBold.8709b7f1f6fabaaa7896.woff",
+    "static/media/Inter-ExtraBold.woff": "/static/media/Inter-ExtraBold.589aaa938b49be935427.woff",
+    "static/media/Inter-Medium.woff": "/static/media/Inter-Medium.2faa383bb66313c2a072.woff",
+    "static/media/Inter-ExtraLight.woff": "/static/media/Inter-ExtraLight.abc6c6573f4198a1aac3.woff",
+    "static/media/Inter-Light.woff": "/static/media/Inter-Light.58e178ba5b1b06e45495.woff",
+    "static/media/Inter-Black.woff": "/static/media/Inter-Black.573292a805d572a8fab2.woff",
+    "static/media/Inter-Thin.woff": "/static/media/Inter-Thin.93cdaa39b9e998c90fd7.woff",
+    "static/media/Inter-Regular.woff": "/static/media/Inter-Regular.f8c4b51c613b8c0f88ea.woff",
+    "static/media/Inter-ExtraBold.woff2": "/static/media/Inter-ExtraBold.8b6d61241a6bfe95bb8e.woff2",
+    "static/media/Inter-Bold.woff2": "/static/media/Inter-Bold.52f101528f148535b992.woff2",
+    "static/media/Inter-SemiBold.woff2": "/static/media/Inter-SemiBold.dd34801fd60f17ce9fc0.woff2",
+    "static/media/Inter-Medium.woff2": "/static/media/Inter-Medium.9e5be4a657e25b6d4287.woff2",
+    "static/media/Inter-ExtraLight.woff2": "/static/media/Inter-ExtraLight.3576207fe0c462ea5536.woff2",
+    "static/media/Inter-Light.woff2": "/static/media/Inter-Light.f25729e3394c0829c87b.woff2",
+    "static/media/Inter-Black.woff2": "/static/media/Inter-Black.37ea900f5b2e5e5bc7aa.woff2",
+    "static/media/Inter-Thin.woff2": "/static/media/Inter-Thin.f2bbf13ef416e260c1f9.woff2",
+    "static/media/Inter-Regular.woff2": "/static/media/Inter-Regular.91d1538224164e1fba3a.woff2",
+    "static/media/Golos Text-Regular.ttf": "/static/media/Golos Text-Regular.4e79730984d81b89818d.ttf",
+    "static/media/Golos Text_Regular.woff": "/static/media/Golos Text_Regular.e1eaca9659ece8f766a8.woff",
+    "static/media/Golos Text_Regular.eot": "/static/media/Golos Text_Regular.080615e65388b71eafa0.eot",
+    "static/media/Golos Text_Regular.woff2": "/static/media/Golos Text_Regular.94ea974b38664183fcd6.woff2",
+    "index.html": "/index.html",
+    "main.520e11e8.css.map": "/static/css/main.520e11e8.css.map",
+    "main.7f37bf26.js.map": "/static/js/main.7f37bf26.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.520e11e8.css",
+    "static/js/main.7f37bf26.js"
+  ]
+}
