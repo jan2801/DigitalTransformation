@@ -20,7 +20,7 @@ cd client
 npm install
 ```
 
-Далее сбока проекта
+Далее сборка проекта
 
 ```
 npm run build 
