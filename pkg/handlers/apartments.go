@@ -5,10 +5,14 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"math/rand"
 	"moshack_2022/pkg/apartments"
 	"moshack_2022/pkg/apartments/excelParser"
 	"moshack_2022/pkg/session"
 	"net/http"
+	"os"
+	"strconv"
+	"strings"
 
 	"github.com/ybbus/jsonrpc"
 	"go.uber.org/zap"
@@ -20,6 +24,125 @@ type ApartmentHandler struct {
 	Logger        *zap.SugaredLogger
 	Sessions      *session.SessionsManager
 	JSONrpcClient jsonrpc.RPCClient
+}
+
+func unmarshalRequest(str string) string {
+	dummyMap := make(map[string]interface{})
+	m1 := make(map[string]map[string]string)
+	m2 := []map[string]string{}
+	err := json.Unmarshal([]byte(str), &dummyMap)
+	if err != nil {
+		fmt.Println("ERROR", err)
+		return ""
+	}
+	for key, val := range dummyMap {
+		if key == "cat" {
+			cast1, ok := val.([]interface{})
+			if !ok {
+				fmt.Println("cast error 1")
+				return ""
+			}
+			for i := range cast1 {
+				cast2, ok := cast1[i].(map[string]interface{})
+				if !ok {
+					fmt.Println("cast error 2")
+					return ""
+				}
+				m2 = append(m2, make(map[string]string))
+				for key, val := range cast2 {
+					m2[i][key] = val.(string)
+				}
+			}
+		} else {
+			casted, ok := val.(map[string]interface{})
+			if !ok {
+				fmt.Println("cast error 3")
+				return ""
+			}
+			if _, ok := m1[key]; !ok {
+				m1[key] = make(map[string]string)
+			}
+			for key2, val2 := range casted {
+				m1[key][key2] = val2.(string)
+			}
+		}
+	}
+	var code []string
+	for i := range m2 {
+		code = append(code, m2[i]["code"])
+	}
+	codesArray := strings.Join(code, ",")
+	level, _ := strconv.Atoi(m1["level"]["id"])
+	monthStart, _ := strconv.Atoi(m1["start"]["id"])
+	monthEnd, _ := strconv.Atoi(m1["end"]["id"])
+	return fmt.Sprintf("[%s],%d,%s,%s,%d,%d\n", codesArray, level, m1["subject"]["code"], m1["country"]["code"], monthStart, monthEnd)
+}
+
+func (h *ApartmentHandler) Load2(w http.ResponseWriter, r *http.Request) {
+	jsonStr := ""
+	_, err := r.Body.Read([]byte(jsonStr))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	resultStr := unmarshalRequest(jsonStr)
+	if resultStr == "" {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	dirName := fmt.Sprintf("dir%d", rand.Int())
+	err = os.Mkdir(dirName, 0755)
+	if err != nil {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	fp, err := os.OpenFile(dirName+"/params.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	if err != nil {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	fp.WriteString(resultStr)
+	fp.Close()
+	proc, err := os.StartProcess("Data_Preporation.py", []string{"Data_Preporation.py", dirName}, nil)
+	if err != nil {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	_, err = proc.Wait()
+	if err != nil {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	dirFd, err := os.ReadDir(dirName)
+	if err != nil {
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+	var files []string
+	for i := range dirFd {
+		if dirFd[i].Name() != "params.txt" {
+			files = append(files, dirFd[i].Name())
+		}
+	}
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Disposition", "attachment; filename="+"data")
+	w.Header().Set("Content-Transfer-Encoding", "binary")
+	w.Header().Set("Expires", "0")
+	delimiter := "---------------------------"
+	for i := range files {
+		w.Write([]byte(delimiter + files[i] + delimiter))
+		fp, err := os.Open(dirName + "/" + files[i])
+		if err != nil {
+			http.Error(w, "something went wrong", http.StatusInternalServerError)
+			return
+		}
+		_, err = io.Copy(w, fp)
+		if err != nil {
+			http.Error(w, "something went wrong", http.StatusInternalServerError)
+			return
+		}
+		fp.Close()
+	}
 }
 
 func (h *ApartmentHandler) Load(w http.ResponseWriter, r *http.Request) {

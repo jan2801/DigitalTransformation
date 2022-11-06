@@ -116,6 +116,8 @@ func main() {
 	r.HandleFunc("/finalestimation", apartmentHandler.EstimateAll).Methods("POST")
 
 	r.HandleFunc("/downloadxls", apartmentHandler.Download).Methods("GET")
+	r.HandleFunc("/load", apartmentHandler.Load2).Methods("GET")
+	r.HandleFunc("/createUser", userHandler.CreateUser).Methods("POST")
 
 	mux := middleware.Auth(sm, r)
 	mux = middleware.AccessLog(logger, mux)
@@ -126,5 +128,6 @@ func main() {
 		"type", "START",
 		"addr", addr,
 	)
+
 	http.ListenAndServe(addr, mux)
 }
