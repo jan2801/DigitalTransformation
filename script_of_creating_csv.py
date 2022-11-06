@@ -53,10 +53,10 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
     return  list_of_napr
  
     
-    
+previous_line = ''   
     
 while True:
-    previous_line = ''
+
     with open('params.txt', encoding='utf-8') as f:
         line = f.readline()
     
