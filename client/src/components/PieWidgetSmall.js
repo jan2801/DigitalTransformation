@@ -8,6 +8,8 @@ const styles = {
 		marginTop: '10px',
 		marginBottom: '10px',
 		padding: '30px',
+		height: '373px',
+
 	},
 	pie: {
 		width: 243,
@@ -19,6 +21,7 @@ const styles = {
 		fontWeight: '400',
 		fontSize: '10px',
 		color: '#000000',
+		width: '101px',
 	},
 	legendItem: {
 		display: 'flex',
@@ -26,10 +29,8 @@ const styles = {
 		alignItems: 'center',
 		padding: '0px',
 		gap: '4px',
-		flex: 'none',
-		order: '2',
-		alignSelf: 'stretch',
 		flexGrow: '0',
+		flexShrink: '0',
 	},
 	legendGroup: {
 		display: 'flex',
@@ -49,8 +50,11 @@ const styles = {
 };
 
 function PieWidget(props) {
+	
+	const color = d3.scaleOrdinal(d3.schemeCategory10);
 	const pieSize = props.pieSize;
 	useEffect(()=>{
+		const angles = [];
 		document.getElementById(props.divId).innerHTML = '';
 		// append the svg object to the div called 'my_dataviz'
 		const svg = d3.select(`#${props.divId}`)
@@ -64,8 +68,7 @@ function PieWidget(props) {
 		const data = props.data;
 
 		// set the color scale
-		const color = d3.scaleOrdinal()
-		.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
+		const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 		// Compute the position of each group on the pie:
 		const pie = d3.pie()
@@ -82,10 +85,28 @@ function PieWidget(props) {
 		.innerRadius(pieSize/4)         // This is the size of the donut hole
 		.outerRadius(pieSize/2)
 		)
-		.attr('fill', d => color(d.data[0]))
+		.attr('fill', d => {
+			angles.push(0.5*(d.startAngle+d.endAngle));
+			console.log(angles);
+			return color(d.data[0])
+		})
 		.attr("stroke", "white")
 		.style("stroke-width", "3px")
 		.style("opacity", 0.7)
+		for (let i=0; i<angles.length; i++) {
+			const div = document.createElement('div');
+			div.innerHTML = Object.values(data)[i];
+			div.style.position = 'absolute';
+			div.style.top = `${pieSize/2 - 3*pieSize/8*Math.cos(angles[i])-10}px`;
+			div.style.left = `${pieSize/2 + 3*pieSize/8*Math.sin(angles[i])-10}px`;
+			div.style.fontFamily = 'Inter';
+			div.style.fontStyle= 'normal';
+			div.style.fontWeight= '400';
+			div.style.fontSize= '18px';
+			div.style.lineHeight= '18px';
+			div.style.color= '#FFFFFF';
+			document.getElementById(props.divId).appendChild(div);
+		}
 	}, []);
 	return (
 		<Card shadow={false} border style={styles.card}>
@@ -95,13 +116,17 @@ function PieWidget(props) {
 				</Col>
 			</Row>
 			<Row style={{paddingTop: '10px', paddingBottom: '10px'}}>
-				<Col lg='8'>
-					<div id={props.divId}></div>
+				<Col lg='auto'>
+					<div id={props.divId} style={{position: 'relative'}}></div>
 				</Col>
-				<Col lg='4' styles={styles.legendGroup}>
+				<Col styles={styles.legendGroup}>
 					{
 						Object.keys(props.data).map(function(key, index) {
-							return <div style={styles.legendItem}><div>o</div><div style={styles.label}>{key}</div></div>
+							return <div style={styles.legendItem}><div style={{
+								width: '10px',
+								height: '10px',
+								background: color(index),
+							}}></div><div style={styles.label}>{key}</div></div>
 						})
 					}
 				</Col>

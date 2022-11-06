@@ -31,7 +31,7 @@ const styles = {
 		paddingBottom: '26px',
 	},
 	text: {
-		
+		paddingTop: '4px',
 		fontFamily: "'Inter'",
 		fontStyle: "normal",
 		fontWeight: 400,
@@ -61,13 +61,13 @@ function CountryRating(props) {
 			{props.data.map((item)=>{
 				return (
 					<Row style={styles.item}>
-						<Col lg='2'>
-							{item['Флаг']}
+						<Col lg='1'>
+							<img src={`flags/${item['Флаг']}.png`} width='26px' height='16px'></img>
 						</Col>
 						<Col lg='5' style={styles.text}>
 							{item['Страна']}
 						</Col>
-						<Col lg='5' style={{...styles.text, ...{textAlign: 'right'}}}>
+						<Col lg='6' style={{...styles.text, ...{textAlign: 'right'}}}>
 							{numberWithSpaces(item[value])}
 						</Col>
 					</Row>
