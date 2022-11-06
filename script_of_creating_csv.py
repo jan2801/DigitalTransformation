@@ -56,28 +56,30 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
 previous_line = ''   
     
 while True:
-
-    with open('params.txt', encoding='utf-8') as f:
-        line = f.readline()
-    
-    
-    if line!=previous_line:
-    
-        code = line.split(']')[0][1:].replace("'","").split(',')
-        parse_params = line.split(']')[1][1:].split(',')
-        code_lvl = int(parse_params[0])
-        region = parse_params[1].replace("'","")
-        country = parse_params[2].replace("'","")
-        per_start = parse_params[3].replace("'","")
-        per_end = parse_params[4].replace("'","")
+    try:
+        with open('params.txt', encoding='utf-8') as f:
+            line = f.readline()
         
         
+        if line!=previous_line:
         
-        df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, country = country, per_start=per_start, per_end=per_end)
-        
-        for key in (df_top_n):
-            df_top_n[key].to_csv(key)
+            code = line.split(']')[0][1:].replace("'","").split(',')
+            parse_params = line.split(']')[1][1:].split(',')
+            code_lvl = int(parse_params[0])
+            region = parse_params[1].replace("'","")
+            country = parse_params[2].replace("'","")
+            per_start = parse_params[3].replace("'","")
+            per_end = parse_params[4].replace("'","")
             
-        previous_line = line
+            
+            
+            df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, country = country, per_start=per_start, per_end=per_end)
+            
+            for key in (df_top_n):
+                df_top_n[key].to_csv(key)
+                
+            previous_line = line
+    except Exception:
+        pass
         
     
