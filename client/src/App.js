@@ -568,9 +568,9 @@ const styles = {
 };
 
 
-function sendRequest(url, data, callback) {
+function sendRequest(url, postget, data, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', url);
+	xhr.open(postget, url);
 	xhr.send();
 	xhr.onload = function() {
 		if (xhr.status !== 200) {
@@ -615,53 +615,58 @@ function App() {
 	};
 
 	const setFilters2 = (filters)=>{
-		console.log(JSON.stringify(filters));
-		let files = [
-			'ex_35_all_DE_topregions.csv',
-			'im_35_all_DE_topregions.csv',
-			'im_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
-			'ex_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
-		];
+		let json = JSON.stringify(filters);
+		sendRequest('load', 'POST', json, (status, res)=>{
+			if (status===400) {
+				console.log(res);
+			}
+		});
+		// let files = [
+		// 	'ex_35_all_DE_topregions.csv',
+		// 	'im_35_all_DE_topregions.csv',
+		// 	'im_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
+		// 	'ex_35_46000_МОСКОВСКАЯ_ОБЛАСТЬ_DE_topcountryes.csv',
+		// ];
 
-		for (const file of files) {
-			let filename = file.split('_');
+		// for (const file of files) {
+		// 	let filename = file.split('_');
 			
-			sendRequest(file, {}, (status, res)=>{
-				let rows = res.split('\r\n');
-				if (filename[0]==='ex' && filename[2]==='all' && filename[3]!=='all') {
-					let data = [];
-					for (let i=1; i<6; i++) {
-						try {
-							data.push({
-								'Страна': rows[i].split(',')[0].split(' - ')[1],
-								'Флаг': 'RU',
-								'тыс. долл.': parseInt(rows[i].split(',')[1]),
-								'кг.': 0,
-								'тыс. долл./кг.': 0,
-							});
-						} catch {}
-					}
-					console.log(data);
-					setExportRating(data);
-				}
-				if (filename[filename.length-1]=='topregions' && filename[0]=='im') {
-					let data = [];
-					for (let i=1; i<6; i++) {
-						try {
-							data.push({
-								'Страна': rows[i].split(',')[0].split(' - ')[1],
-								'Флаг': 'RU',
-								'тыс. долл.': parseInt(rows[i].split(',')[1]),
-								'кг.': 0,
-								'тыс. долл./кг.': 0,
-							});
-						} catch {}
-					}
-					console.log(data);
-					setExportRating(data);
-				}
-			})
-		}
+		// 	sendRequest(file, {}, (status, res)=>{
+		// 		let rows = res.split('\r\n');
+		// 		if (filename[0]==='ex' && filename[2]==='all' && filename[3]!=='all') {
+		// 			let data = [];
+		// 			for (let i=1; i<6; i++) {
+		// 				try {
+		// 					data.push({
+		// 						'Страна': rows[i].split(',')[0].split(' - ')[1],
+		// 						'Флаг': 'RU',
+		// 						'тыс. долл.': parseInt(rows[i].split(',')[1]),
+		// 						'кг.': 0,
+		// 						'тыс. долл./кг.': 0,
+		// 					});
+		// 				} catch {}
+		// 			}
+		// 			console.log(data);
+		// 			setExportRating(data);
+		// 		}
+		// 		if (filename[filename.length-1]==='topregions' && filename[0]==='im') {
+		// 			let data = [];
+		// 			for (let i=1; i<6; i++) {
+		// 				try {
+		// 					data.push({
+		// 						'Страна': rows[i].split(',')[0].split(' - ')[1],
+		// 						'Флаг': 'RU',
+		// 						'тыс. долл.': parseInt(rows[i].split(',')[1]),
+		// 						'кг.': 0,
+		// 						'тыс. долл./кг.': 0,
+		// 					});
+		// 				} catch {}
+		// 			}
+		// 			console.log(data);
+		// 			setImportRating(data);
+		// 		}
+		// 	})
+		// }
 	}
 
 	const setRequest = (filters)=>{
@@ -672,7 +677,14 @@ function App() {
 
 	const sendLoginRequest = (login, password)=>{
 		console.log(login, password);
-		setActiveTab('Дашборд');
+		sendRequest('login', 'POST', {
+			login: login,
+			password: password,
+		}, (status, res)=>{
+			if (status===400) {
+				setActiveTab('Дашборд');
+			}
+		})
 	}
 
 	const logout = ()=>{
@@ -738,10 +750,10 @@ function App() {
 							</Row>
 							<Row>
 								<Col lg='4'>
-									<CountryRating data={importRating} label='Рейтинг экспортеров товара' />
+									<CountryRating data={exportRating} label='Рейтинг экспортеров товара' />
 								</Col>
 								<Col lg='4'>
-									<CountryRating data={exportRating} label='Рейтинг импортеров товара' />
+									<CountryRating data={importRating} label='Рейтинг импортеров товара' />
 								</Col>
 								<Col lg='4'>
 									<PieWidgetSmall pieSize={200} data={mockData.pieData} divId='importerparts' />
