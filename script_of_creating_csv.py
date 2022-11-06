@@ -68,7 +68,7 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
  
     
 
-with open('params.txt', encoding='utf-8') as f:
+with open(folder_name+'/params.txt', encoding='utf-8') as f:
     line = f.readline()
 
     code = line.split(']')[0][1:].replace("'","").split(',')
