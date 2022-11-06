@@ -7,7 +7,7 @@
 Установка зависимостей для data science части
 
 ```
-  pip install libraries_for_ds.txt
+pip install -r libraries_for_ds.txt
 ```
 
 ### JS
