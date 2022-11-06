@@ -66,7 +66,7 @@ def get_request_by_region(data_new_im, data_new_ex,code='all', code_lvl=10, regi
     return  list_of_napr
 
 
-df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, per_start=per_start, per_end=per_end )
+df_top_n = get_request_by_region(data_new_im, data_new_ex, code=code, code_lvl=code_lvl, region=region, country = country, per_start=per_start, per_end=per_end)
 
 for key in (df_top_n):
     df_top_n[key].to_csv(key)
