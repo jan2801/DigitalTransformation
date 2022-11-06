@@ -577,7 +577,7 @@ function sendRequest(url, data, callback) {
 			alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
 	  	} else { 
 			alert(`Готово, получили ${xhr.response.length} байт`);
-			callback(xhr.response);
+			callback(xhr.status, xhr.response);
 	  	}
 	};
 }
@@ -597,6 +597,19 @@ function App() {
 		level: {label: '1', id: '1'},
 		cat: null,
 	});
+
+	const clearFilters = ()=>{
+		console.log('Чистим')
+		setFilters({
+			start: {label: 'Все время', id: '1'},
+			end: {label: 'Все время', id: '1'},
+			country: {label:"Все страны",code:"ALL"},
+			subject: {code: '00000', label: 'Все субъекты'},
+			level: {label: '1', id: '1'},
+			cat: null,
+		});
+		console.log(filters);
+	};
 
 	const setFilters2 = (filters)=>{
 		console.log(JSON.stringify(filters));
@@ -629,7 +642,7 @@ function App() {
 				{activeTab==='Дашборд' ?
 					<Row style={{height: 'Calc(100% - 64px)', width: '100%', margin: '0px'}}>
 						<Col lg='3' style={styles.leftBar}>
-							<Sidebar setFilters={setFilters2} countries={countries} subjects={subjects} filters={filters} />
+							<Sidebar setFilters={setFilters2} countries={countries} subjects={subjects} filters={filters} clearFilters={clearFilters} />
 							<UserProfile user={mockData.user} open={sideBarOpen} />
 						</Col>
 						<Col lg='9' style={styles.rightBar}>

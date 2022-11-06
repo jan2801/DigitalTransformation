@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Combobox } from '@consta/uikit/Combobox';
 
 const styles = {
@@ -18,7 +18,7 @@ const styles = {
 	},
 }
 function SelectBox(props) {
-	const [value, setValue] = useState(props.items[0]);
+	const [value, setValue] = useState(props.value);
 	return <div style={styles.selectBox}>
 		<div style={styles.label}>{props.label}</div>
 			<Combobox 
