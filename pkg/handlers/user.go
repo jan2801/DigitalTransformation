@@ -23,6 +23,15 @@ type UserHandler struct {
 	Sessions *session.SessionsManager
 }
 
+func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+	err := h.UserRepo.AddUser(r.FormValue("login"), r.FormValue("password"), r.FormValue("role"))
+	if err != nil {
+		http.Redirect(w, r, "/registration?error="+errorRepeatedLogin, http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 func (h *UserHandler) Index(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/login", http.StatusFound)
 
@@ -80,7 +89,7 @@ func (h *UserHandler) Registration(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
-	err := h.UserRepo.AddUser(r.FormValue("login"), r.FormValue("password"))
+	err := h.UserRepo.AddUser(r.FormValue("login"), r.FormValue("password"), "loch")
 	if err != nil {
 		http.Redirect(w, r, "/registration?error="+errorRepeatedLogin, http.StatusFound)
 		return

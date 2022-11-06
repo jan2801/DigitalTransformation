@@ -36,7 +36,7 @@ func (repo *UserMemoryRepository) Authorize(login, pass string) (*user, error) {
 	return &users[0], nil
 }
 
-func (repo *UserMemoryRepository) AddUser(login, password string) error {
+func (repo *UserMemoryRepository) AddUser(login, password, role string) error {
 	oldUser := make([]user, 0)
 	repo.db.Where("login = ?", login).Find(&oldUser)
 	if len(oldUser) != 0 {
@@ -50,6 +50,7 @@ func (repo *UserMemoryRepository) AddUser(login, password string) error {
 	newUser := user{
 		Login:    login,
 		Password: hashedPassword,
+		Role:     role,
 	}
 	db := repo.db.Create(&newUser)
 	if db.Error != nil {
