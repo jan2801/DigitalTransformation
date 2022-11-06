@@ -38,5 +38,3 @@ a.	Проводник -> Клонировать репозиторий -> стр
 7.	Print sudo apt install postgres
 8.	print go main.go 
 
-
-![image](https://user-images.githubusercontent.com/73964925/200194387-2807d1d9-164e-436a-9960-3e2d5d183d64.png)
