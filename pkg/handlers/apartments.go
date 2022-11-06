@@ -33,6 +33,7 @@ func unmarshalRequest(str string) string {
 	err := json.Unmarshal([]byte(str), &dummyMap)
 	if err != nil {
 		fmt.Println("ERROR", err)
+		fmt.Println(str)
 		return ""
 	}
 	for key, val := range dummyMap {
@@ -79,13 +80,12 @@ func unmarshalRequest(str string) string {
 }
 
 func (h *ApartmentHandler) Load2(w http.ResponseWriter, r *http.Request) {
-	jsonStr := ""
-	_, err := r.Body.Read([]byte(jsonStr))
+	jsonStr, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	resultStr := unmarshalRequest(jsonStr)
+	resultStr := unmarshalRequest(string(jsonStr))
 	if resultStr == "" {
 		http.Error(w, "something went wrong", http.StatusInternalServerError)
 		return
@@ -151,6 +151,7 @@ func (h *ApartmentHandler) Load(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Template errror", http.StatusInternalServerError)
 		return
 	}
+	http.Redirect(w, r, "/load", http.StatusFound)
 }
 
 func (h *ApartmentHandler) Download(w http.ResponseWriter, r *http.Request) {
