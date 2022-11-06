@@ -96,8 +96,10 @@ def main():
             df_old_imp = pickle.load(input_file)
         data_ex = pd.concat([data_ex, df_old_exp])
         data_ex = df.reset_index(drop=True)
+        data_ex = data_ex[data_ex.duplicated() != True]
         data_im = pd.concat([data_im, df_old_imp])
         data_im = df.reset_index(drop=True)
+        data_im = data_im[data_im.duplicated() != True]
 
         with open('./data_result/result_export/data_export.pickle', 'wb') as f:
             pickle.dump(data_ex, f)
@@ -126,10 +128,12 @@ def main():
         data = clean_tnved(data)
         data = period_to_datetime(data)
         data = remane_tnved(data)
+        data = data[data.duplicated() != True]
 
         # Separate Export / import dataset
         data_ex = data[data['napr'] == 'ЭК']
         data_im = data[data['napr'] == 'ИМ']
+
 
         with open('./data_result/result_export/data_export.pickle', 'wb') as f:
             pickle.dump(data_ex, f)
