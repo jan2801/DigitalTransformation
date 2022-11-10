@@ -110,10 +110,6 @@ func main() {
 	r.HandleFunc("/loadxls", apartmentHandler.Load).Methods("GET")
 	r.HandleFunc("/loadxls", apartmentHandler.ParseFile).Methods("POST")
 
-	r.HandleFunc("/estimation", apartmentHandler.Table).Methods("GET")
-	r.HandleFunc("/estimation", apartmentHandler.Estimate).Methods("POST")
-	r.HandleFunc("/reestimation", apartmentHandler.Reestimate).Methods("POST")
-	r.HandleFunc("/finalestimation", apartmentHandler.EstimateAll).Methods("POST")
 
 	r.HandleFunc("/downloadxls", apartmentHandler.Download).Methods("GET")
 	r.HandleFunc("/load", apartmentHandler.Load2).Methods("POST")
